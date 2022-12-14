@@ -10,20 +10,29 @@ main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SharedPreferences prefs = await SharedPreferences.getInstance();
   bool isLightTheme = prefs.getBool(SPref.isLight) ?? true;
+  bool isOsThemeOn = prefs.getBool(SPref.isOsTheme) ?? false;
+  print("Tema (main): ${isOsThemeOn}");
+  if (isOsThemeOn) {
+    // se true, deve seguir o padrão do tema do sistema
+    var brightness = WidgetsBinding.instance.window.platformBrightness;
+    brightness == Brightness.dark ?  isLightTheme = false : isLightTheme = true;
+  }
   runApp(AppStart(
       isLightTheme: isLightTheme,
+      isOsThemeOn: isOsThemeOn,
   ));
 }
 
 class AppStart extends StatelessWidget {
-  const AppStart({super.key, required this.isLightTheme});
+  const AppStart({super.key, required this.isLightTheme, required this.isOsThemeOn});
   final bool isLightTheme;
+  final bool isOsThemeOn;
 
   @override
   Widget build(BuildContext context) {
     return MultiProvider(providers: [
       ChangeNotifierProvider(
-          create: (_) => ThemeProvider(isLightTheme: isLightTheme),
+          create: (_) => ThemeProvider(isLightTheme: isLightTheme, isOsThemeOn: isOsThemeOn),
       ),
     ], child: MyApp());
   }

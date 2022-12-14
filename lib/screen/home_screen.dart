@@ -18,6 +18,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Offset containerPosition = const Offset(350, 350);
   Offset finalPosition = const Offset(350, 350);
 
+
   @override
   void didChangeDependencies() {
     final Size size = MediaQuery.of(context).size;
@@ -40,11 +41,11 @@ class _HomeScreenState extends State<HomeScreen> {
     ThemeProvider themeProvider = Provider.of<ThemeProvider>(context);
 
     return Scaffold(
-      /*floatingActionButton: FloatingActionButton(
+      floatingActionButton: FloatingActionButton(
         onPressed: () {
-          themeProvider.toggleThemeData();
+          themeProvider.offThemeData();
         },
-      ),*/
+      ),
       body: Container(
         decoration: BoxDecoration(
             gradient: RadialGradient(

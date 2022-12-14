@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -6,7 +8,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class ThemeProvider with ChangeNotifier {
   bool isLightTheme;
-  ThemeProvider({required this.isLightTheme});
+  bool isOsThemeOn;
+  ThemeProvider({required this.isLightTheme, required this.isOsThemeOn});
 
   getCurrentStatusNavigationBarColor() {
     if (isLightTheme) {
@@ -31,17 +34,31 @@ class ThemeProvider with ChangeNotifier {
   // use to toggle the theme
   toggleThemeData() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    if (isLightTheme){
-      sharedPreferences.setBool(SPref.isLight, false);
-      isLightTheme = !isLightTheme;
-      notifyListeners();
-    }else{
-      sharedPreferences.setBool(SPref.isLight, true);
-      isLightTheme = !isLightTheme;
+    if (!isOsThemeOn) {
+      if (isLightTheme){
+        sharedPreferences.setBool(SPref.isLight, false);
+        isLightTheme = !isLightTheme;
+        notifyListeners();
+      }else{
+        sharedPreferences.setBool(SPref.isLight, true);
+        isLightTheme = !isLightTheme;
+        notifyListeners();
+      }
+      getCurrentStatusNavigationBarColor();
       notifyListeners();
     }
-    getCurrentStatusNavigationBarColor();
-    notifyListeners();
+  }
+
+  offThemeData() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    print("Tema : ${isOsThemeOn}");
+    if (isOsThemeOn) {
+      sharedPreferences.setBool(SPref.isOsTheme, false);
+    }else{
+      sharedPreferences.setBool(SPref.isOsTheme, true);
+    }
+
+
   }
 
   ThemeData themeData() {
