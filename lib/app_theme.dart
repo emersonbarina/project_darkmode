@@ -34,7 +34,6 @@ class ThemeProvider with ChangeNotifier {
   // use to toggle the theme
   toggleThemeData() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-
     if (!isOsThemeOn) {
       if (isLightTheme){
         sharedPreferences.setBool(SPref.isLight, false);
@@ -52,7 +51,6 @@ class ThemeProvider with ChangeNotifier {
 
   offThemeData() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-
     if (isOsThemeOn) {
       sharedPreferences.setBool(SPref.isOsTheme, false);
       isOsThemeOn = false;
@@ -60,8 +58,6 @@ class ThemeProvider with ChangeNotifier {
       sharedPreferences.setBool(SPref.isOsTheme, true);
       isOsThemeOn = true;
     }
-
-
   }
 
   ThemeData themeData() {

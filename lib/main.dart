@@ -13,7 +13,7 @@ main() async {
   bool isOsThemeOn = prefs.getBool(SPref.isOsTheme) ?? false;
   print("Tema (main): ${isOsThemeOn}");
   if (isOsThemeOn) {
-    // se true, deve seguir o padrão do tema do sistema
+    // se true, deve seguir o padrão do tema do sistema operacional
     var brightness = WidgetsBinding.instance.window.platformBrightness;
     brightness == Brightness.dark ?  isLightTheme = false : isLightTheme = true;
   }
