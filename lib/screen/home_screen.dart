@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:project_darkmode/app_theme.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../constant/constant.dart';
 import 'component/wire_draw.dart';
 
@@ -12,12 +13,33 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
   Offset initialPosition = const Offset(250, 0);
   Offset switchPosition = const Offset(350, 350);
   Offset containerPosition = const Offset(350, 350);
   Offset finalPosition = const Offset(350, 350);
 
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangePlatformBrightness() async {
+    print("Tema : didChange");
+    ThemeProvider themeProvider = Provider.of<ThemeProvider>(context);
+    // Nao esta atualizando a tela após mudança do tema do SO
+
+    themeProvider.toggleThemeData();
+
+    //super.didChangePlatformBrightness();
+  }
 
   @override
   void didChangeDependencies() {
@@ -32,6 +54,7 @@ class _HomeScreenState extends State<HomeScreen> {
     } else {
       switchPosition = finalPosition;
     }
+
     super.didChangeDependencies();
   }
 
